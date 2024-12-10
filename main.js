@@ -3,6 +3,8 @@ const arr1 = [
     'а', 'б', 'в', 'г', 'д', 'е', 'ё', 'ж', 'з', 'и', 'й', 'к', 'л', 'м', 'н', 'о', 'п', 'р', 'с', 'т', 'у', 'ф', 'х', 'ц', 'ч', 'ш', 'щ', 'ъ', 'ы', 'ь', 'э', 'ю', 'я'
 ];
 
+
+//шифрование
 function encryptText(text, shift) {
     let encryptedMessage = '';
     for (let symbol of text) {
@@ -17,6 +19,22 @@ function encryptText(text, shift) {
     return encryptedMessage;
 }
 
+//дешифрование
+function decryptText(text, shift) {
+    let decryptedMessage = '';
+    for (let symbol of text) {
+        const index = arr1.indexOf(symbol);
+        if (index !== -1) {
+            const newIndex = (index) % arr1.length;
+            decryptedMessage += arr1[newIndex];
+        } else {
+            decryptedMessage += symbol; // Символ остается без изменения, если не был найден
+        }
+    }
+    return decryptedMessage;
+}
+
+//Взлом
 function hackText(encryptedText) {
     const letterFrequency = {
         'е': 0.0809, 'н': 0.0670, 'о': 0.0597, 'а': 0.0591, 'и': 0.0689, 'т': 0.0626,
@@ -70,6 +88,7 @@ function hackText(encryptedText) {
     return hackedText;
 }
 
+//Вывод зашифрованного текста 
 document.getElementById('encryptButton').addEventListener('click', () => {
     const inputText = document.getElementById('inputText').value;
     const shift = parseInt(document.getElementById('shift').value);
@@ -81,6 +100,19 @@ document.getElementById('encryptButton').addEventListener('click', () => {
     }
 });
 
+//Вывод дешифрованного текста 
+document.getElementById('decryptButton').addEventListener('click', () => {
+    const inputText = document.getElementById('inputText').value;
+    const shift = parseInt(document.getElementById('shift').value);
+    if (!isNaN(shift)) {
+        const decryptedText = decryptText(inputText, shift);
+        document.getElementById('outputText').innerText = `.Дешифрованный текст: ${decryptedText}`;
+    } else {
+        alert('Пожалуйста, введите корректное значение сдвига от 0 до 66.');
+    }
+});
+
+//Вывод взломанного текста
 document.getElementById('hackButton').addEventListener('click', () => {
     const encryptedText = document.getElementById('outputText').innerText.replace('Зашифрованный текст: ', '');
     const hackedText = hackText(encryptedText);
